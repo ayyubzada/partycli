@@ -1,31 +1,37 @@
-﻿namespace Party.Cli.Services;
+﻿using Newtonsoft.Json;
+using Party.Cli.Models;
 
-internal class NordVpnService
+namespace Party.Cli.Services;
+
+public class NordVpnService
 {
     private static readonly HttpClient client = new HttpClient();
 
-    internal async Task<string> GetAllServersListAsync()
+    public async Task<IEnumerable<ServerModel>?> GetAllServersListAsync()
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "https://api.nordvpn.com/v1/servers");
         var response = await client.SendAsync(request);
         var responseString = await response.Content.ReadAsStringAsync();
-        return responseString;
+
+        return JsonConvert.DeserializeObject<IEnumerable<ServerModel>>(responseString);
     }
 
-    internal async Task<string> GetAllServerByCountryListAsync(int countryId)
+    public async Task<IEnumerable<ServerModel>?> GetAllServerByCountryListAsync(int countryId)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "https://api.nordvpn.com/v1/servers?filters[servers_technologies][id]=35&filters[country_id]=" + countryId);
         var response = await client.SendAsync(request);
         var responseString = await response.Content.ReadAsStringAsync();
-        return responseString;
+
+        return JsonConvert.DeserializeObject<IEnumerable<ServerModel>>(responseString);
     }
 
-    internal async Task<string> GetAllServerByProtocolListAsync(int vpnProtocol)
+    public async Task<IEnumerable<ServerModel>?> GetAllServerByProtocolListAsync(int vpnProtocol)
     {
         var request = new HttpRequestMessage(HttpMethod.Get, "https://api.nordvpn.com/v1/servers?filters[servers_technologies][id]=" + vpnProtocol);
         var response = await client.SendAsync(request);
         var responseString = await response.Content.ReadAsStringAsync();
-        return responseString;
+
+        return JsonConvert.DeserializeObject<IEnumerable<ServerModel>>(responseString);
     }
 
 }

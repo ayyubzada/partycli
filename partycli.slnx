@@ -1,3 +1,6 @@
 <Solution>
+  <Project Path="Party.Application/Party.Application.csproj" Id="a21534ba-1d82-42bb-afd1-d777d23c5d05" />
   <Project Path="Party.Cli/Party.Cli.csproj" />
+  <Project Path="Party.Core/Party.Core.csproj" Id="3a5064ac-ad5b-466a-ac11-8cc91bbc549a" />
+  <Project Path="Party.Infrastructure/Party.Infrastructure.csproj" Id="26228704-c3e0-40d8-b7ad-01190cee7ded" />
 </Solution>

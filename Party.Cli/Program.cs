@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Party.Cli.Models;
 using Party.Cli.Persistance;
 using Party.Cli.Persistance.Repositories;
 using Party.Cli.Services;
+using Serilog;
 
 var configBuilder = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -27,6 +29,16 @@ services.AddScoped<Repository>();
 services.AddScoped<NordVpnService>();
 services.AddScoped<PartyService>();
 services.AddScoped<DisplayService>();
+
+Log.Logger = new LoggerConfiguration()
+       .ReadFrom.Configuration(configuration)
+       .CreateLogger();
+
+services.AddLogging(builder =>
+{
+    builder.ClearProviders();
+    builder.AddSerilog();
+});
 
 var provider = services.BuildServiceProvider();
 

@@ -1,14 +1,17 @@
-﻿using Party.Cli.Models;
+﻿using Microsoft.Extensions.Logging;
+using Party.Cli.Models;
 using Party.Cli.Persistance.Repositories;
 
 namespace Party.Cli.Services;
 
 public class PartyService(
     NordVpnService nordVpnService,
+    ILogger<PartyService> logger,
     Repository repository,
     DisplayService displayService)
 {
     private readonly NordVpnService _nordVpnService = nordVpnService;
+    private readonly ILogger<PartyService> _logger = logger;
     private readonly Repository _repository = repository;
     private readonly DisplayService _displayService = displayService;
 
@@ -29,7 +32,7 @@ public class PartyService(
                     {
                         var serverList = await _nordVpnService.GetAllServersListAsync();
                         await _repository.SaveServersAsync(serverList);
-                        LogAsync("Saved new server list: " + serverList);
+                        _logger.LogInformation("Saved new server list: " + serverList);
                         _displayService.DisplayServers(serverList);
                     }
                 }
@@ -52,7 +55,7 @@ public class PartyService(
                         Value = arg
                     };
                     await _repository.UpsertConfigurationAsync(config);
-                    LogAsync("Changed " + proccessName(name) + " to " + arg);
+                    _logger.LogInformation("Changed " + proccessName(name) + " to " + arg);
                     name = null;
                 }
             }
@@ -74,7 +77,7 @@ public class PartyService(
                     var query = new VpnServerQuery(null, 74, null, null, null, null);
                     var serverList = await _nordVpnService.GetAllServerByCountryListAsync(query.CountryId.Value); //France id == 74
                     await _repository.SaveServersAsync(serverList);
-                    LogAsync("Saved new server list: " + serverList);
+                    _logger.LogInformation("Saved new server list: " + serverList);
                     _displayService.DisplayServers(serverList);
                 }
                 else if (arg == "--TCP")
@@ -85,7 +88,7 @@ public class PartyService(
                     var query = new VpnServerQuery(5, null, null, null, null, null);
                     var serverList = await _nordVpnService.GetAllServerByProtocolListAsync((int)query.Protocol.Value);
                     await _repository.SaveServersAsync(serverList);
-                    LogAsync("Saved new server list: " + serverList);
+                    _logger.LogInformation("Saved new server list: " + serverList);
                     _displayService.DisplayServers(serverList);
                 }
             }
@@ -105,16 +108,5 @@ public class PartyService(
     {
         name = name.Replace("-", string.Empty);
         return name;
-    }
-
-    async Task LogAsync(string action)
-    {
-        var newLog = new LogModel
-        {
-            Action = action,
-            Time = DateTime.UtcNow
-        };
-
-        await _repository.AddLogAsync(newLog);
     }
 }

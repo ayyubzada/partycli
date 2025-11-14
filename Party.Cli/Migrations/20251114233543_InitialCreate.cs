@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -24,18 +23,6 @@ namespace Party.Cli.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Logs",
-                columns: table => new
-                {
-                    Action = table.Column<string>(type: "TEXT", nullable: false),
-                    Time = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Logs", x => new { x.Action, x.Time });
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Servers",
                 columns: table => new
                 {
@@ -54,9 +41,6 @@ namespace Party.Cli.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Configurations");
-
-            migrationBuilder.DropTable(
-                name: "Logs");
 
             migrationBuilder.DropTable(
                 name: "Servers");

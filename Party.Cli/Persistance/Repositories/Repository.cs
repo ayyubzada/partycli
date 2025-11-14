@@ -61,53 +61,6 @@ public class Repository(PartyDbContext context)
         }
     }
 
-    public async Task<bool> AddLogAsync(LogModel log, CancellationToken ct = default)
-    {
-        try
-        {
-            await _context.Logs.AddAsync(log, ct);
-            var affectedRows = await _context.SaveChangesAsync(ct);
-            return affectedRows > 0;
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return false;
-        }
-    }
-
-    public async Task<IEnumerable<LogModel>> GetLogsAsync(
-        DateTime? from = null,
-        DateTime? to = null,
-        int take = 100,
-        CancellationToken ct = default)
-    {
-        try
-        {
-            var query = _context.Logs.AsQueryable();
-
-            if (from.HasValue)
-                query = query.Where(l => l.Time >= from.Value);
-
-            if (to.HasValue)
-                query = query.Where(l => l.Time <= to.Value);
-
-            if (take <= 0 || take >= 1000)
-                take = 100;
-
-            query = query
-                .OrderByDescending(l => l.Time)
-                .Take(take);
-
-            return await query.ToListAsync(ct);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return Enumerable.Empty<LogModel>();
-        }
-    }
-
     public async Task<bool> UpsertConfigurationAsync(
         ConfigurationModel config,
         CancellationToken ct = default)

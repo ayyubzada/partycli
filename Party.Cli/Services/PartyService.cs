@@ -5,10 +5,12 @@ namespace Party.Cli.Services;
 
 public class PartyService(
     NordVpnService nordVpnService,
-    Repository repository)
+    Repository repository,
+    DisplayService displayService)
 {
     private readonly NordVpnService _nordVpnService = nordVpnService;
     private readonly Repository _repository = repository;
+    private readonly DisplayService _displayService = displayService;
 
     public async Task HandleRequest(string[] parameters)
     {
@@ -28,7 +30,7 @@ public class PartyService(
                         var serverList = await _nordVpnService.GetAllServersListAsync();
                         await _repository.SaveServersAsync(serverList);
                         LogAsync("Saved new server list: " + serverList);
-                        DisplayList(serverList.ToList());
+                        _displayService.DisplayServers(serverList);
                     }
                 }
                 if (arg == "config")
@@ -60,9 +62,9 @@ public class PartyService(
                 {
                     var servers = await _repository.GetServersAsync();
                     if (servers.Any())
-                        DisplayList(servers.ToList());
+                        _displayService.DisplayServers(servers);
                     else
-                        Console.WriteLine("Error: There are no server data in local storage");
+                        _displayService.DisplayWarning("There are no server data in local storage");
                 }
                 else if (arg == "--france")
                 {
@@ -73,7 +75,7 @@ public class PartyService(
                     var serverList = await _nordVpnService.GetAllServerByCountryListAsync(query.CountryId.Value); //France id == 74
                     await _repository.SaveServersAsync(serverList);
                     LogAsync("Saved new server list: " + serverList);
-                    DisplayList(serverList.ToList());
+                    _displayService.DisplayServers(serverList);
                 }
                 else if (arg == "--TCP")
                 {
@@ -84,7 +86,7 @@ public class PartyService(
                     var serverList = await _nordVpnService.GetAllServerByProtocolListAsync((int)query.Protocol.Value);
                     await _repository.SaveServersAsync(serverList);
                     LogAsync("Saved new server list: " + serverList);
-                    DisplayList(serverList.ToList());
+                    _displayService.DisplayServers(serverList);
                 }
             }
             argIndex = argIndex + 1;
@@ -92,28 +94,17 @@ public class PartyService(
 
         if (currentState == States.none)
         {
-            Console.WriteLine("To get and save all servers, use command: partycli.exe server_list");
-            Console.WriteLine("To get and save France servers, use command: partycli.exe server_list --france");
-            Console.WriteLine("To get and save servers that support TCP protocol, use command: partycli.exe server_list --TCP");
-            Console.WriteLine("To see saved list of servers, use command: partycli.exe server_list --local ");
+            _displayService.DisplayMessage("To get and save all servers, use command: partycli.exe server_list");
+            _displayService.DisplayMessage("To get and save France servers, use command: partycli.exe server_list --france");
+            _displayService.DisplayMessage("To get and save servers that support TCP protocol, use command: partycli.exe server_list --TCP");
+            _displayService.DisplayMessage("To see saved list of servers, use command: partycli.exe server_list --local ");
         }
-        Console.Read();
     }
 
     static string proccessName(string name)
     {
         name = name.Replace("-", string.Empty);
         return name;
-    }
-
-    void DisplayList(List<ServerModel> serverlist)
-    {
-        Console.WriteLine("Server list: ");
-
-        for (var index = 0; index < serverlist.Count(); index++)
-            Console.WriteLine("Name: " + serverlist[index].Name);
-
-        Console.WriteLine("Total servers: " + serverlist.Count);
     }
 
     async Task LogAsync(string action)

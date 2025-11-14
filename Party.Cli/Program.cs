@@ -26,6 +26,7 @@ services.AddDbContext<PartyDbContext>(options =>
 services.AddScoped<Repository>();
 services.AddScoped<NordVpnService>();
 services.AddScoped<PartyService>();
+services.AddScoped<DisplayService>();
 
 var provider = services.BuildServiceProvider();
 

@@ -70,6 +70,78 @@ namespace Party.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to dotnet run server_list.
+        /// </summary>
+        internal static string ListServersExample {
+            get {
+                return ResourceManager.GetString("ListServersExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dotnet run server_list --local.
+        /// </summary>
+        internal static string ListServersLocalExample {
+            get {
+                return ResourceManager.GetString("ListServersLocalExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List all available servers in local environment which were fetched from NordVpn API:.
+        /// </summary>
+        internal static string ListServersLocalTitle {
+            get {
+                return ResourceManager.GetString("ListServersLocalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dotnet run server_list --{countryName}.
+        /// </summary>
+        internal static string ListServersOfCountryExample {
+            get {
+                return ResourceManager.GetString("ListServersOfCountryExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List all available servers from NordVpn API (by country name):.
+        /// </summary>
+        internal static string ListServersOfCountryTitle {
+            get {
+                return ResourceManager.GetString("ListServersOfCountryTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to dotnet run server_list --{protocolName}.
+        /// </summary>
+        internal static string ListServersOfProtocolExample {
+            get {
+                return ResourceManager.GetString("ListServersOfProtocolExample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List specific protocol servers from NordVpn API:.
+        /// </summary>
+        internal static string ListServersOfProtocolTitle {
+            get {
+                return ResourceManager.GetString("ListServersOfProtocolTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List all available servers from NordVpn API:.
+        /// </summary>
+        internal static string ListServersTitle {
+            get {
+                return ResourceManager.GetString("ListServersTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No servers to display..
         /// </summary>
         internal static string NoServersProvided {
@@ -79,7 +151,7 @@ namespace Party.Application.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name: {0, -40} Load: {1, 3}% Status: {2}.
+        ///   Looks up a localized string similar to Name: {0, -40} Load: {1, 3} Status: {2}.
         /// </summary>
         internal static string ServerInfoModel {
             get {

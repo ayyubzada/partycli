@@ -52,6 +52,7 @@ internal class CommandHandler(
         for (int i = 1; i < args.Length; i++)
         {
             var arg = args[i].ToLowerInvariant();
+            var trimmedArg = arg.Trim('-');
 
             switch (arg)
             {
@@ -61,16 +62,16 @@ internal class CommandHandler(
                     return;
             }
 
-            switch (GetParameterType(arg))
+            switch (GetParameterType(arg, trimmedArg))
             {
                 case ParameterType.LocalData:
                     query.UseLocalData = true;
                     break;
                 case ParameterType.Country:
-                    query.CountryId = Enum.Parse<CountryId>(arg, true);
+                    query.CountryId = Enum.Parse<CountryId>(trimmedArg, true);
                     break;
                 case ParameterType.Protocol:
-                    query.VpnProtocol = Enum.Parse<VpnProtocol>(arg, true);
+                    query.VpnProtocol = Enum.Parse<VpnProtocol>(trimmedArg, true);
                     break;
                 case ParameterType.Help:
                 case ParameterType.Unknown:
@@ -83,15 +84,17 @@ internal class CommandHandler(
         await _serverListService.GetAndDisplayServersAsync(query, cancellationToken);
     }
 
-    private ParameterType GetParameterType(string parameter)
+    private ParameterType GetParameterType(string normalizedParam, string trimmedParam)
     {
-        var normalizedParam = parameter.ToLowerInvariant();
+        if (string.IsNullOrWhiteSpace(normalizedParam))
+            return ParameterType.Unknown;
+
         return normalizedParam switch
         {
             "-h" or "--help" => ParameterType.Help,
             "--local" => ParameterType.LocalData,
-            _ => Enum.TryParse<CountryId>(normalizedParam, true, out _) ? ParameterType.Country :
-                Enum.TryParse<VpnProtocol>(normalizedParam, true, out _) ? ParameterType.Protocol :
+            _ => Enum.TryParse<CountryId>(trimmedParam, true, out _) ? ParameterType.Country :
+                Enum.TryParse<VpnProtocol>(trimmedParam, true, out _) ? ParameterType.Protocol :
                 ParameterType.Unknown
         };
     }

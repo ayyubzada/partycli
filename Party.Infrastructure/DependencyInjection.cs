@@ -17,7 +17,6 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SectionName));
-        services.Configure<VpnApiOptions>(configuration.GetSection(VpnApiOptions.SectionName));
 
         var databaseOptions = configuration
             .GetSection(DatabaseOptions.SectionName)
@@ -30,7 +29,6 @@ public static class DependencyInjection
         services.AddScoped<IServerRepository, ServerRepository>();
         services.AddScoped<IConfigurationRepository, ConfigurationRepository>();
 
-        services.AddHttpClient<IVpnService, NordVpnService>();
 
         services.AddSingleton<IDisplayService, ConsoleDisplayService>();
 

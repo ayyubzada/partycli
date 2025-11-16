@@ -1,6 +1,8 @@
 ﻿namespace Party.Infrastructure.Configurations;
 
-public record DatabaseOptions(string ConnectionString)
+public class DatabaseOptions
 {
     public const string SectionName = "Database";
+
+    public string ConnectionString { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using Party.Application.DTOs;
+using Party.Application.Mappers;
 using Party.Application.Services.Abstractions;
-using Party.Core.Entities;
 using Party.Core.Enums;
 using Party.Core.Repositories.Abstractions;
 using Party.Core.Services.Abstractions;
@@ -44,9 +44,9 @@ public class ServerListService(
 
             if (servers?.Any() == true)
             {
-                await _serverRepository.ReplaceServersAsync(servers, cancellationToken);
+                await _serverRepository.UpsertServersAsync(servers, cancellationToken);
                 _logger.LogInformation("Retrieved/saved {Count} servers from VPN service", servers.Count());
-                return MapToDto(servers);
+                return servers.ToDtoModels();
             }
 
             _logger.LogWarning("There is no any found server from VPN service");
@@ -68,9 +68,9 @@ public class ServerListService(
 
             if (servers?.Any() == true)
             {
-                await _serverRepository.ReplaceServersAsync(servers, cancellationToken);
+                await _serverRepository.UpsertServersAsync(servers, cancellationToken);
                 _logger.LogInformation("Retrieved {Count} servers from VPN service for country {CountryId}", servers.Count(), countryId);
-                return MapToDto(servers);
+                return servers.ToDtoModels();
             }
 
             _logger.LogWarning("There is no any found server from VPN service for country {CountryId}", countryId);
@@ -92,9 +92,9 @@ public class ServerListService(
 
             if (servers?.Any() == true)
             {
-                await _serverRepository.ReplaceServersAsync(servers, cancellationToken);
+                await _serverRepository.UpsertServersAsync(servers, cancellationToken);
                 _logger.LogInformation("Retrieved {Count} servers from VPN service for protocol {ProtocolId}", servers.Count(), protocolId);
-                return MapToDto(servers);
+                return servers.ToDtoModels();
             }
 
             _logger.LogWarning("There is no any found server from VPN service for protocol {ProtocolId}", protocolId);
@@ -117,7 +117,7 @@ public class ServerListService(
             if (servers?.Any() == true)
             {
                 _logger.LogInformation("Retrieved {Count} servers from local db", servers.Count());
-                return MapToDto(servers);
+                return servers.ToDtoModels();
             }
 
             _logger.LogWarning("There is no any found server in local database");
@@ -129,7 +129,4 @@ public class ServerListService(
             return [];
         }
     }
-
-    private IEnumerable<ServerDto> MapToDto(IEnumerable<Server> servers) =>
-        servers.Select(s => new ServerDto(s.Name, s.Load, s.Status));
 }

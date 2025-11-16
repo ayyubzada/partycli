@@ -26,7 +26,7 @@ try
         .ConfigureServices((context, services) =>
         {
             services.AddInfrastructureServices(configuration);
-            services.AddApplicationServices();
+            services.AddApplicationServices(configuration);
 
             services.AddScoped<CommandHandler>();
         })
@@ -48,6 +48,7 @@ try
     {
         var commandHandler = scope.ServiceProvider.GetRequiredService<CommandHandler>();
         await commandHandler.HandleAsync(args);
+        //await commandHandler.HandleAsync(["server_list"]);
     }
 }
 catch (Exception ex)

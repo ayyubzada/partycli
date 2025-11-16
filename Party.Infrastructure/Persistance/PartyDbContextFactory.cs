@@ -1,19 +1,25 @@
-﻿namespace Party.Infrastructure.Persistance;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
 
-//public class PartyDbContextFactory : IDesignTimeDbContextFactory<PartyDbContext>
-//{
-//    public PartyDbContext CreateDbContext(string[] args)
-//    {
-//        var config = new ConfigurationBuilder()
-//            .SetBasePath(Directory.GetCurrentDirectory())
-//            .AddJsonFile("appsettings.json", optional: false)
-//            .Build();
+namespace Party.Infrastructure.Persistance;
 
-//        var connectionString = config.GetSection("Database").GetValue<string>("ConnectionString");
+public class PartyDbContextFactory : IDesignTimeDbContextFactory<PartyDbContext>
+{
+    public PartyDbContext CreateDbContext(string[] args)
+    {
+        var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Party.Cli");
 
-//        var optionsBuilder = new DbContextOptionsBuilder<PartyDbContext>();
-//        optionsBuilder.UseSqlite(connectionString);
+        var config = new ConfigurationBuilder()
+            .SetBasePath(basePath)
+            .AddJsonFile("appsettings.json", optional: false)
+            .Build();
 
-//        return new PartyDbContext(optionsBuilder.Options);
-//    }
-//}
+        var connectionString = config.GetSection("Database").GetValue<string>("ConnectionString");
+
+        var optionsBuilder = new DbContextOptionsBuilder<PartyDbContext>();
+        optionsBuilder.UseSqlite(connectionString);
+
+        return new PartyDbContext(optionsBuilder.Options);
+    }
+}

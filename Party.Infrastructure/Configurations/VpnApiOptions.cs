@@ -1,6 +1,9 @@
 ﻿namespace Party.Infrastructure.Configurations;
 
-public record VpnApiOptions(string BaseUrl, int TimeoutSeconds)
-{
-    public const string SectionName = "VpnApi";
-}
+//public class VpnApiOptions
+//{
+//    public const string SectionName = "VpnApi";
+
+//    public string BaseUrl { get; set; } = null!;
+//    public int TimeoutSeconds { get; set; }
+//}

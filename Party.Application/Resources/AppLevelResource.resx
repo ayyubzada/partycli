@@ -120,11 +120,35 @@
   <data name="ConsoleAppTitle" xml:space="preserve">
     <value>PartyCLI - VPN Servers</value>
   </data>
+  <data name="ListServersExample" xml:space="preserve">
+    <value>dotnet run server_list</value>
+  </data>
+  <data name="ListServersLocalExample" xml:space="preserve">
+    <value>dotnet run server_list --local</value>
+  </data>
+  <data name="ListServersLocalTitle" xml:space="preserve">
+    <value>List all available servers in local environment which were fetched from NordVpn API:</value>
+  </data>
+  <data name="ListServersOfCountryExample" xml:space="preserve">
+    <value>dotnet run server_list --{countryName}</value>
+  </data>
+  <data name="ListServersOfCountryTitle" xml:space="preserve">
+    <value>List all available servers from NordVpn API (by country name):</value>
+  </data>
+  <data name="ListServersOfProtocolExample" xml:space="preserve">
+    <value>dotnet run server_list --{protocolName}</value>
+  </data>
+  <data name="ListServersOfProtocolTitle" xml:space="preserve">
+    <value>List specific protocol servers from NordVpn API:</value>
+  </data>
+  <data name="ListServersTitle" xml:space="preserve">
+    <value>List all available servers from NordVpn API:</value>
+  </data>
   <data name="NoServersProvided" xml:space="preserve">
     <value>No servers to display.</value>
   </data>
   <data name="ServerInfoModel" xml:space="preserve">
-    <value>Name: {0, -40} Load: {1, 3}% Status: {2}</value>
+    <value>Name: {0, -40} Load: {1, 3} Status: {2}</value>
   </data>
   <data name="ServerListing" xml:space="preserve">
     <value>Server List:</value>

@@ -39,6 +39,21 @@ public class ServerDisplayService(
     {
         await _displayService.DisplayMessageAsync(AppLevelResource.ConsoleAppTitle, cancellationToken: cancellationToken);
         await _displayService.DisplaSeperatorAsync(cancellationToken);
-        //TODO: Add detailed info
+
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersTitle, cancellationToken: cancellationToken);
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersExample, cancellationToken: cancellationToken);
+        await _displayService.DisplaSeperatorAsync(cancellationToken);
+
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersOfCountryTitle, cancellationToken: cancellationToken);
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersOfCountryExample, cancellationToken: cancellationToken);
+        await _displayService.DisplaSeperatorAsync(cancellationToken);
+
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersOfProtocolTitle, cancellationToken: cancellationToken);
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersOfProtocolExample, cancellationToken: cancellationToken);
+        await _displayService.DisplaSeperatorAsync(cancellationToken);
+
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersLocalTitle, cancellationToken: cancellationToken);
+        await _displayService.DisplayMessageAsync(AppLevelResource.ListServersLocalExample, cancellationToken: cancellationToken);
+        await _displayService.DisplaSeperatorAsync(cancellationToken);
     }
 }

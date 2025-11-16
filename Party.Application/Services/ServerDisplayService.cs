@@ -38,6 +38,7 @@ public class ServerDisplayService(
     public async Task DisplayHelpAsync(CancellationToken cancellationToken = default)
     {
         await _displayService.DisplayMessageAsync(AppLevelResource.ConsoleAppTitle, cancellationToken: cancellationToken);
+        await _displayService.DisplayMessageAsync(AppLevelResource.ConsoleAppDescription, cancellationToken: cancellationToken);
         await _displayService.DisplaSeperatorAsync(cancellationToken);
 
         await _displayService.DisplayMessageAsync(AppLevelResource.ListServersTitle, cancellationToken: cancellationToken);

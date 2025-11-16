@@ -31,7 +31,7 @@ internal class CommandHandler(
                 case "server_list":
                     await HandleServerListCommandAsync(args, cancellationToken);
                     break;
-                case "config":
+                case "config": //We can extend this later for configuration management
                     await _serverDisplayService.DisplayHelpAsync(cancellationToken);
                     break;
                 default:

@@ -61,6 +61,18 @@ namespace Party.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 
+        ///To be able to fetch approprate servers by country or by protocol, you mast pass correct names. To see example countries you can take a look at CountryId and VpnProtocol domain enums values. Or you can referance to NordVPN official API guide.
+        ///
+        ///To be able to see the action flow,  you can take a look at the logs in [Party.Cli\logs] files..
+        /// </summary>
+        internal static string ConsoleAppDescription {
+            get {
+                return ResourceManager.GetString("ConsoleAppDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PartyCLI - VPN Servers.
         /// </summary>
         internal static string ConsoleAppTitle {

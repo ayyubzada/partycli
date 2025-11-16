@@ -1,6 +1,6 @@
-﻿namespace Party.Cli.Models;
+﻿namespace Party.Core.Entities;
 
-public class ServerModel
+public class Server
 {
     public string Name { get; set; } = null!;
     public int Load { get; set; }

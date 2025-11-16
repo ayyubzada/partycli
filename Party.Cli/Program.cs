@@ -1,53 +1,61 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Party.Cli.Models;
-using Party.Cli.Persistance;
-using Party.Cli.Persistance.Repositories;
-using Party.Cli.Services;
+using Party.Application;
+using Party.Cli.Commands;
+using Party.Infrastructure;
+using Party.Infrastructure.Persistance;
 using Serilog;
 
-var configBuilder = new ConfigurationBuilder()
+var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-
-var configuration = configBuilder.Build();
-
-var services = new ServiceCollection();
-
-services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
-
-var dbOptions = configuration.GetSection("Database").Get<DatabaseOptions>()!;
-
-services.AddDbContext<PartyDbContext>(options =>
-{
-    options.UseSqlite(dbOptions.ConnectionString);
-});
-
-services.AddScoped<Repository>();
-services.AddScoped<NordVpnService>();
-services.AddScoped<PartyService>();
-services.AddScoped<DisplayService>();
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .Build();
 
 Log.Logger = new LoggerConfiguration()
        .ReadFrom.Configuration(configuration)
        .CreateLogger();
 
-services.AddLogging(builder =>
+try
 {
-    builder.ClearProviders();
-    builder.AddSerilog();
-});
+    Log.Information("Starting Party CLI application");
 
-var provider = services.BuildServiceProvider();
+    var host = Host.CreateDefaultBuilder(args)
+        .ConfigureServices((context, services) =>
+        {
+            services.AddInfrastructureServices(configuration);
+            services.AddApplicationServices();
 
-using (var scope = provider.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<PartyDbContext>();
-    db.Database.Migrate();
+            services.AddScoped<CommandHandler>();
+        })
+        .ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.AddSerilog();
+        })
+        .Build();
+
+    using (var scope = host.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<PartyDbContext>();
+        await db.Database.MigrateAsync();
+        Log.Information("Database migration completed successfully");
+    }
+
+    using (var scope = host.Services.CreateScope())
+    {
+        var commandHandler = scope.ServiceProvider.GetRequiredService<CommandHandler>();
+        await commandHandler.HandleAsync(args);
+    }
 }
-
-var partyService = provider.GetRequiredService<PartyService>();
-
-await partyService.HandleRequest(args);
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application stopped unexpectedly");
+    throw;
+}
+finally
+{
+    await Log.CloseAndFlushAsync();
+}

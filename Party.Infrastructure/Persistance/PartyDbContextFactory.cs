@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace Party.Infrastructure.Persistance;
 
+/// Factory for creating PartyDbContext instances at design time
+/// It is used by EF Core tools for migrations and scaffolding
 public class PartyDbContextFactory : IDesignTimeDbContextFactory<PartyDbContext>
 {
     public PartyDbContext CreateDbContext(string[] args)
